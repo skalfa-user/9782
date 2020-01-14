@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<prefix name="firebaseauth" label="Firebase auth" language_tag="en" language_label="English">
+    <key name="api_settings_desc"><value>You can read the &lt;a target="_blank" href="https://firebase.google.com/docs/web/setup"&gt;doc&lt;/a&gt; how to obtain both api key and auth domain</value></key>
+    <key name="social_networks_desc"><value>You can read the &lt;a target="_blank" href="https://firebase.google.com/docs/auth/web/start"&gt;doc&lt;/a&gt; how to configure the social networks</value></key>
+    <key name="social_networks_label"><value>Social networks</value></key>
+    <key name="api_settings_label"><value>Api setup</value></key>
+    <key name="form_auth_domain_title_label"><value>Auth domain</value></key>
+    <key name="settings_successfully_saved"><value>Settings successfully saved</value></key>
+    <key name="form_submit_label"><value>Submit</value></key>
+    <key name="form_api_title_label"><value>Api key</value></key>
+    <key name="admin_header"><value>Firebase authenticate</value></key>
+    <key name="authenticate"><value>Authenticate...</value></key>
+    <key name="authenticate_error"><value>Authentication error, please try again later</value></key>
+    <key name="connect_via_page_header"><value>Connect via</value></key>
+    <key name="connect_via_different_network_label"><value>Or sign in via different network</value></key>
+    <key name="connect_via_label"><value>Or connect via</value></key>
+    <key name="successfully_authenticated"><value>You have been successfully authenticated</value></key>
+    <key name="missing_settings_error"><value>&lt;a href="{$url}"&gt;Firebase auth plugin&lt;/a&gt; requires additional configuration</value></key>
+</prefix>

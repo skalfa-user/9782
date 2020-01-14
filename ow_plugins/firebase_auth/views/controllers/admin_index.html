@@ -1,0 +1,32 @@
+
+{form name='settings_form' class='firebaseauth-form'}
+    <div class="clearfix">
+        <div class="ow_column ow_left">
+            {block_decorator name='box' langLabel='firebaseauth+api_settings_label'}
+                <div class="ow_stdmargin">{text key='firebaseauth+api_settings_desc'}</div>
+                <table class="ow_table_1 ow_form">
+                    <tr class="ow_alt1">
+                        <td class="ow_label">{label name='api_key'}</td>
+                        <td class="ow_value">{input name='api_key'}<br />{error name='api_key'}</td>
+                    </tr>
+                    <tr class="ow_alt1">
+                        <td class="ow_label">{label name='auth_domain'}</td>
+                        <td class="ow_value">{input name='auth_domain'}<br />{error name='auth_domain'}</td>
+                    </tr>
+                </table>
+            {/block_decorator}
+        </div>
+        <div class="ow_column ow_right">
+            {block_decorator name='box' langLabel='firebaseauth+social_networks_label'}
+                <div class="ow_stdmargin">{text key='firebaseauth+social_networks_desc'}</div>
+                {input name='enabled_providers'}
+            {/block_decorator}
+        </div>
+    </div>
+
+    <div class="clearfix ow_stdmargin">
+        <div class="ow_right">
+            {submit name='submit'}
+        </div>
+    </div>
+{/form}
