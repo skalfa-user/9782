@@ -38,5 +38,6 @@ class SUBRED_CLASS_EventHandler
 
         OW::getRequestHandler()->setCatchAllRequestsAttributes("subred.redirect_to_subscribe", $attributes);
         OW::getRequestHandler()->addCatchAllRequestsExclude("subred.redirect_to_subscribe", 'BASE_CTRL_User', 'signOut');
+        OW::getRequestHandler()->addCatchAllRequestsExclude("subred.redirect_to_subscribe", 'BILLINGPAYPAL_CTRL_Order');
     }
 }

@@ -88,6 +88,13 @@ class UserStatus extends Base
                 Request::METHOD_POST,
                 Request::METHOD_GET
             ]
+        ],
+        [
+            'controller' => 'users',
+            'methods' => [
+                Request::METHOD_POST,
+                Request::METHOD_GET
+            ]
         ]
     ];
 
