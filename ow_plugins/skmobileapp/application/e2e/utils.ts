@@ -41,11 +41,11 @@ export class Utils {
      */
     initAppGeoLocation(latitude: number = 100, longitude: number = 100): void {
         browser.executeScript(`window.navigator.geolocation.getCurrentPosition = function(success, error) {
-            success({ 
-                coords : { 
+            success({
+                coords : {
                     latitude: ${latitude},
-                    longitude: ${longitude} 
-                } 
+                    longitude: ${longitude}
+                }
             });
         };`);
     }
@@ -134,7 +134,7 @@ export class Utils {
             });
 
         // click the 'ok' button
-        element.all(by.className('picker-toolbar-button')).last().click(); 
+        element.all(by.className('picker-toolbar-button')).last().click();
 
         return browser.sleep(timeOut);
     }
@@ -172,7 +172,7 @@ export class Utils {
         });
 
         // click the 'ok' button
-        element.all(by.className('alert-button')).last().click(); 
+        element.all(by.className('alert-button')).last().click();
 
         return browser.sleep(timeOut);
     }

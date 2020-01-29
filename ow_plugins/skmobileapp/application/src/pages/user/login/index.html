@@ -26,13 +26,30 @@
                         </span>
                     </button>
                 </div>
-                <div *ngIf="isFacebookConnectAvailable" class="sk-facebook-wrap">
-                    <div class="sk-facebook-label">
-                        {{ 'facebook_connect_login_label' | translate }}
+
+                 <!-- auth providers -->
+                <div *ngIf="authProviders$ | async; let authProviders" class="sk-firebase">
+                    <ng-container *ngIf="authProviders.length">
+                        <!-- auth providers label -->
+                        <div class="sk-firebase-label">
+                            <span *ngIf="isFirebaseLongProviderList">
+                                {{ 'firebaseauth_connect_via_different_network_label' | translate }}
+                            </span>
+                            <span *ngIf="!isFirebaseLongProviderList">
+                                {{ 'firebaseauth_connect_via_label' | translate }}
+                            </span>
+                        </div>
+                    </ng-container>
+
+                    <!-- all provider list -->
+                    <div *ngIf="!isFirebaseLongProviderList" class="sk-firebase-list">
+                        <button *ngFor="let authProvider of authProviders" class="sk-firebase-button" [attr.data-firebase-provider]="authProvider" type="button" ion-button clear (click)="showFirebaseProvider(authProvider)"></button>
                     </div>
-                    <div class="sk-facebook-button-wrap">
-                        <button type="button" ion-button clear class="sk-facebook" (click)="facebookLogin()"></button>
-                        <ion-spinner *ngIf="isFacebookInProcess" name="ios-small"></ion-spinner>
+
+                    <!-- providers component -->
+                    <div *ngIf="isFirebaseLongProviderList" class="sk-firebase-common-button">
+                        <button class="sk-firebase-button sk-firebase-common" type="button" ion-button clear (click)="showFirebaseProvidersModal()">
+                        </button>
                     </div>
                 </div>
             </div>

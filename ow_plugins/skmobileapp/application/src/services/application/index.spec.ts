@@ -180,7 +180,6 @@ describe('Application service', () => {
         expect(application.getConfig('authorName')).toEqual(fakeApplicationConfig.authorName);
         expect(application.getConfig('authorUrl')).toEqual(fakeApplicationConfig.authorUrl);
         expect(application.getConfig('serverUrl')).toEqual(fakeApplicationConfig.serverUrl);
-        expect(application.getConfig('facebookAppId')).toEqual(fakeApplicationConfig.facebookAppId);
         expect(application.getConfig('googleProjectNumber')).toEqual(fakeApplicationConfig.googleProjectNumber);
         expect(application.getConfig('playStoreKey')).toEqual(fakeApplicationConfig.playStoreKey);
         expect(application.getConfig('pwaBackgroundColor')).toEqual(fakeApplicationConfig.pwaBackgroundColor);
@@ -190,6 +189,8 @@ describe('Application service', () => {
         expect(application.getConfig('pwaIconType')).toEqual(fakeApplicationConfig.pwaIconType);
         expect(application.getConfig('appleIcon')).toEqual(fakeApplicationConfig.appleIcon);
         expect(application.getConfig('appleIconSize')).toEqual(fakeApplicationConfig.appleIconSize);
+        expect(application.getConfig('firebaseApiKey')).toEqual(fakeApplicationConfig.firebaseApiKey);
+        expect(application.getConfig('firebaseAuthDomain')).toEqual(fakeApplicationConfig.firebaseAuthDomain);
     });
 
     it('getGenericApiUrl should get a value from the persistent storage service', () => {

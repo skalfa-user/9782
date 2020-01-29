@@ -23,7 +23,9 @@ self.toolbox.precache(
     ]
 );
 
-self.toolbox.router.default = self.toolbox.networkFirst;
+toolbox.router.get(/.*(?<!.mp4\/)$/, function(request, values, options) {
+    return self.toolbox.networkFirst(request, values, options);
+});
 
 //-- working with push notices --//
 

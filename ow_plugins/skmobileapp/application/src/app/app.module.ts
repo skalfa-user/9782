@@ -13,13 +13,16 @@ import { InAppPurchase } from '@ionic-native/in-app-purchase';
 import { AdMobFree } from '@ionic-native/admob-free';
 import { Push } from '@ionic-native/push';
 import { Device } from '@ionic-native/device';
-import { Facebook } from '@ionic-native/facebook';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AngularFireModule, FirebaseOptionsToken } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 // store
 import { rootReducer, IAppState, INITIAL_STATE } from 'store';
 
 // services
 import * as appServices from 'app/app.services';
+import  { ApplicationService } from 'services/application';
 
 // shared
 import * as appShared from 'app/app.shared';
@@ -43,7 +46,9 @@ import * as appPages from 'app/app.pages';
         TranslateModule.forRoot(),
         NgReduxModule,
         ProgressHttpModule,
-        VirtualScrollerModule
+        VirtualScrollerModule,
+        AngularFireModule.initializeApp({}),
+        AngularFireAuthModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [ //  components that are used in router configurations.
@@ -56,12 +61,22 @@ import * as appPages from 'app/app.pages';
         AdMobFree,
         Push,
         Device,
-        Facebook,
+        InAppBrowser,
         {  
             provide: 'virtualScroller.checkResizeInterval', 
             useValue: 0  
         },
-        ...appServices.list
+        ...appServices.list,
+        { 
+            provide: FirebaseOptionsToken,
+            useFactory: (application) => {
+                return {
+                    apiKey: application.getConfig('firebaseApiKey'),
+                    authDomain: application.getConfig('firebaseAuthDomain')
+                };
+            },
+            deps: [ApplicationService]
+        }
     ]
 })
 

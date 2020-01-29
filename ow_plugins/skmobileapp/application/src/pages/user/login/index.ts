@@ -1,15 +1,15 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ToastController, AlertController, NavController } from 'ionic-angular';
+import { ToastController, AlertController, NavController, Modal, ModalController, LoadingController } from 'ionic-angular';
 import { TranslateService } from 'ng2-translate';
-import { ISubscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 // service
 import { UserService } from 'services/user';
 import { ApplicationService } from 'services/application';
 import { AuthService } from 'services/auth';
 import { SiteConfigsService } from 'services/site-configs';
-import { FacebookService } from 'services/facebook';
+import { FireAuthService } from 'services/fire-auth';
 import { PersistentStorageService } from 'services/persistent-storage';
 
 // questions
@@ -18,10 +18,14 @@ import { QuestionManager } from 'services/questions/manager';
 import { QuestionControlService } from 'services/questions/control.service';
 
 // pages
+import { BaseFormBasedPage } from 'pages/base.form.based'
 import { AppUrlPage } from 'pages/app-url';
 import { DashboardPage } from 'pages/dashboard';
 import { JoinInitialPage } from 'pages/user/join/initial';
 import { ForgotPasswordCheckEmailPage } from 'pages/user/forgot-password/check-email';
+
+// components
+import { AuthProvidersComponent } from './components/auth-providers';
 
 @Component({
     selector: 'login',
@@ -30,21 +34,22 @@ import { ForgotPasswordCheckEmailPage } from 'pages/user/forgot-password/check-e
     providers: [
         QuestionControlService,
         QuestionManager,
-        FacebookService
+        FireAuthService
     ]
 })
 
-export class LoginPage implements OnInit, OnDestroy {
+export class LoginPage extends BaseFormBasedPage implements OnInit, OnDestroy {
     @Input() questions: Array<QuestionBase> = []; // list of questions
 
-    isFacebookInProcess: boolean = false;
     form: FormGroup;
     loginInProcessing: boolean = false;  
     forgotPasswordPage = ForgotPasswordCheckEmailPage;
     joinPage = JoinInitialPage;
     appUrlPage = AppUrlPage;
 
-    private siteConfigsSubscription: ISubscription;
+    authProviders$: Observable<Array<string>>;
+
+    private firebaseAuthProvidersModal: Modal;
 
     /**
      * Constructor
@@ -56,33 +61,35 @@ export class LoginPage implements OnInit, OnDestroy {
         public toast: ToastController,
         private ref: ChangeDetectorRef,
         private user: UserService,
+        private modal: ModalController,
         private auth: AuthService,
         private application: ApplicationService,
         private nav: NavController,
         private alert: AlertController,
-        private facebook: FacebookService,
+        private loadingCtrl: LoadingController,
         private persistentStorage: PersistentStorageService,
-        private questionManager: QuestionManager) {}
+        private fireAuth: FireAuthService,
+        private questionManager: QuestionManager) 
+    {
+        super(questionControl, siteConfigs, translate, toast);
+    }
 
     /**
      * Component init
      */
     ngOnInit(): void {
-        // watch configs changes
-        this.siteConfigsSubscription = this.siteConfigs
-            .watchIsPluginActive('fbconnect')
-            .subscribe(() => this.ref.markForCheck());
+        // init firebase auth
+        if (this.fireAuth.isAuthContextRedirectable() 
+                && this.persistentStorage.getValue('firebase_authenticate')) {
 
-        // Android pwa hack facebook login
-        if (this.application.isAppRunningInPwaMode() && this.persistentStorage.getValue('isFacebookPwaLogin')) {
-            const urlParams = this.application.getAppUrlParams();
+            this.initFirebaseAuth(this.persistentStorage.getValue('firebase_provider'));
 
-            if (urlParams['access_token']) {
-                // trying to get facebook user credentials
-                this.facebook.loadFacebookCredentialsByToken(
-                    urlParams['access_token']).subscribe(credentials => this.facebookAuth(credentials));
-            }
+            this.persistentStorage.setValue('firebase_authenticate', false);
+            this.persistentStorage.setValue('firebase_provider', '');
         }
+
+        // init watchers
+        this.authProviders$ = this.siteConfigs.watchConfig('authProviders');
 
         const isDemoModeActivated: boolean = this.siteConfigs.getConfig('isDemoModeActivated');
  
@@ -120,14 +127,10 @@ export class LoginPage implements OnInit, OnDestroy {
      * Component destroy
      */
     ngOnDestroy(): void {
-        this.siteConfigsSubscription.unsubscribe();
+        // close the firebase modal window
+        if (this.firebaseAuthProvidersModal) {
+            this.firebaseAuthProvidersModal.dismiss();
     }
- 
-    /**
-     * Is facebook connect available
-     */
-    get isFacebookConnectAvailable(): boolean {
-        return this.application.getConfig('facebookAppId') && this.siteConfigs.isPluginActive('fbconnect');
     }
 
     /**
@@ -166,44 +169,102 @@ export class LoginPage implements OnInit, OnDestroy {
     }
 
     /**
-     * Facebook login
+     * Is firebase long provider list
      */
-    facebookLogin(): void {
-        // Android pwa hack
-        if (this.application.isAppRunningInPwaMode() && !this.application.isAppRunningInMobileSafari()) {
-            window.open(this.facebook.getManualLoginUrl(), '_self');
-
-            // Facebook login flag
-            this.persistentStorage.setValue('isFacebookPwaLogin', 1);
-
-            return;
+    get isFirebaseLongProviderList(): boolean {
+        const providers = this.siteConfigs.getConfig('authProviders');
+        
+        if (providers && providers.length > this.siteConfigs.getConfig('maxDisplayedAuthProviders')) {
+            return true;
         }
 
-        // trying to get facebook user credentials
-        this.facebook.loadFacebookCredentials().subscribe(credentials => this.facebookAuth(credentials));
+        return false;
     }
 
     /**
-     * Facebook Auth
+     * Init firebase auth
      */
-    facebookAuth(credentials): void {
-        this.isFacebookInProcess = true;
-        this.ref.markForCheck();
+    initFirebaseAuth(providerId: string): void {
+        // show a loading window
+        const loading = this.loadingCtrl.create({
+            content: this.translate.instant('firebaseauth_authenticate'),
+            dismissOnPageChange: true
+        });
 
-        //  trying to make the user logged in
-        this.facebook.login(credentials).subscribe(response => {
+        loading.present();
+
+        const appParams = this.application.getAppUrlParams();
+
+        // set custom auth token
+        if (appParams['token']) {
+            this.fireAuth.setCustomToken(providerId, appParams['token']);
+        }
+
+        // get auth data
+        this.fireAuth.watchAuthData().subscribe(user => {
+            // try to authenticate user in the app using the auth data
+            if (user) {
+                this.fireAuth.login(user, providerId).subscribe(response => {
             // the user successfully logged in
-            if (response && response.isSuccess) {
+                    if (response && response.isSuccess === true) {
                 this.auth.setAuthenticated(response.token);
                 this.nav.setRoot(DashboardPage);
 
                 return;
             }
 
-            this.showAlert(this.translate.instant('error_occurred'));
-            this.isFacebookInProcess = false;
-            this.ref.markForCheck();
+                    this.showNotification('firebaseauth_authenticate_error');
+                    loading.dismiss();
+                });
+
+                return;
+            }
+
+            // auth data is missing
+            this.showNotification('firebaseauth_authenticate_error');
+            loading.dismiss();
         });
+    }
+
+    /**
+     * Show firebase auth provider
+     */
+    showFirebaseProvider(provider: string) {
+        // set an auth flag (we need it for auth data fetching when the page will be redirected)
+        if (this.fireAuth.isAuthContextRedirectable()) {
+            this.persistentStorage.setValue('firebase_authenticate', true);
+            this.persistentStorage.setValue('firebase_provider', provider);
+
+            // show a loading window
+            const loading = this.loadingCtrl.create({
+                content: this.translate.instant('firebaseauth_authenticate')
+        });
+
+            loading.present();
+        }
+ 
+        this.fireAuth.signOut().subscribe(() => this.fireAuth.showFirebaseProvider(provider).subscribe(() => {
+            // try to authenticate user (we are ready to fetch the auth data) 
+            if (!this.fireAuth.isAuthContextRedirectable()) {
+                this.initFirebaseAuth(provider);
+            }
+        }));
+    }
+
+    /**
+     * Show firebase providers modal
+     */
+    showFirebaseProvidersModal(): void {
+        this.firebaseAuthProvidersModal = this.modal.create(AuthProvidersComponent);
+
+        // capture the returned data
+        this.firebaseAuthProvidersModal.onDidDismiss((provider?: string) => {
+            if (provider) {
+                this.showFirebaseProvider(provider);
+            }
+        });
+
+        this.firebaseAuthProvidersModal.present();
     }
 
     /**

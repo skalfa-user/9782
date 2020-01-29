@@ -51,7 +51,6 @@
     <key name="forgot_password_code_input_placeholder"><value>Type the reset code</value></key>
     <key name="forgot_password_input"><value>New password</value></key>
     <key name="forgot_password_input_placeholder"><value>Type in new password</value></key>
-    <key name="facebook_connect_login_label"><value>Or connect via</value></key>
     <key name="verify_email_email_input_placeholder"><value>Type your email address</value></key>
     <key name="verify_email_code_input_placeholder"><value>Type the code</value></key>
     <key name="conversations_empty_title"><value>Say Hello</value></key>

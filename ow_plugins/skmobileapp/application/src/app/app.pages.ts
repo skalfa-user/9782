@@ -55,6 +55,7 @@ import { GdprMessageComponent } from 'pages/app-settings/gdpr/gdpr-third-party/c
 import { MembershipsComponent } from 'pages/payments/initial/components/memberships';
 import { InappCreditsComponent } from 'pages/payments/initial/components/inapp-credits';
 import { MobileCreditsComponent } from 'pages/payments/initial/components/mobile-credits';
+import { AuthProvidersComponent } from 'pages/user/login/components/auth-providers';
 
 export const declarationsList = [
     App,
@@ -110,7 +111,8 @@ export const declarationsList = [
     GdprMessageComponent,
     MembershipsComponent,
     InappCreditsComponent,
-    MobileCreditsComponent
+    MobileCreditsComponent,
+    AuthProvidersComponent
 ];
 
 export const entryComponents = [
@@ -157,5 +159,6 @@ export const entryComponents = [
     GdprMessageComponent,
     VideoImConfirmationComponent,
     VideoImChatComponent,
-    UserSearchFilterComponent
+    UserSearchFilterComponent,
+    AuthProvidersComponent
 ];

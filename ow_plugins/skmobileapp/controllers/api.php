@@ -16,7 +16,6 @@ use Skadate\Mobile\Controller\MatchedUsers as MatchedUsersController;
 use Skadate\Mobile\Controller\QuestionsData as QuestionsDataController;
 use Skadate\Mobile\Controller\ServerEvents as ServerEventsController;
 use Skadate\Mobile\Controller\Login as LoginController;
-use Skadate\Mobile\Controller\FacebookConnect as FacebookConnectController;
 use Skadate\Mobile\Controller\ForgotPassword as ForgotPasswordController;
 use Skadate\Mobile\Controller\VerifyEmail as VerifyEmailController;
 use Skadate\Mobile\Controller\Validators as ValidatorsController;
@@ -49,6 +48,7 @@ use Skadate\Mobile\Controller\MobileBilling as MobileBillingController;
 use Skadate\Mobile\Controller\WebPushes as WebPushesController;
 use Skadate\Mobile\Controller\Preferences as PreferencesController;
 use Skadate\Mobile\Controller\EmailNotifications as EmailNotificationsController;
+use Skadate\Mobile\Controller\FireBaseLogin as FireBaseLoginController;
 
 /**
  * Copyright (c) 2016, Skalfa LLC
@@ -101,7 +101,7 @@ class SKMOBILEAPP_CTRL_Api extends OW_ActionController
         $publicControllers = [
             'validators',
             'login',
-            'facebook-connect',
+            'firebase',
             'forgot-password',
             'join-questions',
             'user-genders',
@@ -187,7 +187,6 @@ class SKMOBILEAPP_CTRL_Api extends OW_ActionController
         // init controllers
         $app->mount('/validators', new ValidatorsController);
         $app->mount('/login', new LoginController);
-        $app->mount('/facebook-connect', new FacebookConnectController);
         $app->mount('/forgot-password', new ForgotPasswordController);
         $app->mount('/verify-email', new VerifyEmailController);
         $app->mount('/complete-profile-questions', new CompleteProfileQuestionsController);
@@ -225,6 +224,7 @@ class SKMOBILEAPP_CTRL_Api extends OW_ActionController
         $app->mount('/web-pushes', new WebPushesController);
         $app->mount('/preferences', new PreferencesController);
         $app->mount('/email-notifications', new EmailNotificationsController);
+        $app->mount('/firebase', new FireBaseLoginController);
 
         $app->run();
 

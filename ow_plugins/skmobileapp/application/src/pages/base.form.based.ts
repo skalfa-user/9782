@@ -27,9 +27,9 @@ export abstract class BaseFormBasedPage {
     /**
      * Show notification
      */
-    protected showNotification(lang: string): void {
+    protected showNotification(lang: string, params?: {}): void {
         const notificationToaster = this.toast.create({
-            message: this.translate.instant(lang),
+            message: this.translate.instant(lang, params),
             closeButtonText: this.translate.instant('ok'),
             showCloseButton: true,
             duration: this.siteConfigs.getConfig('toastDuration')

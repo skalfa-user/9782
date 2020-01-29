@@ -76,7 +76,6 @@ export class AuthService {
      * Logout
      */
     public logout(): void {
-        this.storage.removeValue("isFacebookPwaLogin");
         this.storage.removeValue(this.tokenName);
 
         this.user = null;

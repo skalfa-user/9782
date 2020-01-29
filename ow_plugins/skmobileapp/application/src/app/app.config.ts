@@ -9,7 +9,6 @@ export interface IApplicationConfig {
     authorName: string;
     authorUrl: string;
     serverUrl: string;
-    facebookAppId: string;
     googleProjectNumber: string;
     playStoreKey: string;
     pwaBackgroundColor: string;
@@ -19,6 +18,8 @@ export interface IApplicationConfig {
     pwaIconType: string;
     appleIcon: string;
     appleIconSize: string;
+    firebaseApiKey: string;
+    firebaseAuthDomain: string;
 }
 
 export const APPLICATION_CONFIG : IApplicationConfig = require('../../application.config.json');

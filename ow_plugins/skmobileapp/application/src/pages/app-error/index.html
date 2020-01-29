@@ -10,7 +10,7 @@
             <p>{{ 'app_error_page_description' | translate }}</p>
         </div>
         <div *ngIf="bootstrap.applicationDependenciesLoaded$ | async" class="sk-buttons">
-            <button ion-button round (click)="redirect()">
+            <button ion-button round class="sk-app-error-ok-button" (click)="redirect()">
                 <span class="sk-text-overflow">{{ 'ok' | translate }}</span>
             </button>
         </div>
@@ -19,7 +19,7 @@
 
 <ion-footer *ngIf="bootstrap.applicationDependenciesLoaded$ | async" class="sk-back-footer sk-blank-state-footer">
     <ion-toolbar>
-        <button type="button" ion-button block clear icon-start (click)="logout()">
+        <button type="button" class="sk-leave-app-error-button" ion-button block clear icon-start (click)="logout()">
             <ion-icon name="ios-arrow-back"></ion-icon>
             <span class="sk-text-overflow">{{ 'back_to_starter_page_button' | translate }}</span>
         </button>

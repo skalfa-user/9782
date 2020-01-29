@@ -66,7 +66,7 @@ export class App extends BaseApp {
      */
     async initializeApp(): Promise<any> {
         await this.platform.ready();
-        
+
         // set default settings for app
         this.statusBar.styleDefault();
         this.keyboard.disableScroll(false);

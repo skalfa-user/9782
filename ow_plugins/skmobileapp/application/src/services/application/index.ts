@@ -258,8 +258,13 @@ export class ApplicationService {
     /**
      * Get document url
      */
-    getAppUrl(): string {
+    getAppUrl(isIncludeParams: boolean = true): string {
+        // return the full address
+        if (isIncludeParams) {
         return document.URL;
+    }
+
+        return document.URL.split('?')[0];
     }
 
     /**

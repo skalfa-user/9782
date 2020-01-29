@@ -5,7 +5,7 @@
             {{ 'complete_profile_page_header' | translate }}
         </ion-title>
         <ion-buttons end>
-            <button ion-button clear *ngIf="!isPageLoading" [disabled]="questionControl.isFormPending(form) || isUpdatingUserProfile" (click)="submit()">
+            <button ion-button clear *ngIf="!isPageLoading" class="sk-complete-profile-button" [disabled]="questionControl.isFormPending(form) || isUpdatingUserProfile" (click)="submit()">
                 <ion-spinner *ngIf="isUpdatingUserProfile" name="ios-small"></ion-spinner>
                 <span *ngIf="!isUpdatingUserProfile">
                     {{ 'done' | translate }}
@@ -43,7 +43,7 @@
 
 <ion-footer class="sk-back-footer sk-blank-state-footer">
     <ion-toolbar>
-        <button type="button" ion-button block clear icon-start [disabled]="isUpdatingUserProfile" (click)="logout()">
+        <button type="button" class="sk-leave-complete-profile-button" ion-button block clear icon-start [disabled]="isUpdatingUserProfile" (click)="logout()">
             <ion-icon name="ios-arrow-back"></ion-icon>
             <span class="sk-text-overflow">{{ 'back_to_starter_page_button' | translate }}</span>
         </button>

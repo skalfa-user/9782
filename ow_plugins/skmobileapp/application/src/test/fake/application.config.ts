@@ -9,7 +9,6 @@ export const ApplicationConfigFake: IApplicationConfig = {
     authorName: "",
     authorUrl: "",
     serverUrl: "",
-    facebookAppId: "",
     googleProjectNumber: "",
     playStoreKey: "",
     pwaBackgroundColor: "#ffffff",
@@ -18,5 +17,7 @@ export const ApplicationConfigFake: IApplicationConfig = {
     pwaIconSize: "192x192",
     pwaIconType: "image/png",
     appleIcon: "assets/img/apple-touch-icon.png",
-    appleIconSize: "180x180"
+    appleIconSize: "180x180",
+    firebaseApiKey: "",
+    firebaseAuthDomain: ""
 }

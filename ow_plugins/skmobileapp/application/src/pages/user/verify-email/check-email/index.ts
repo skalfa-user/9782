@@ -135,7 +135,9 @@ export class VerifyEmailCheckEmailPage extends BaseFormBasedPage implements OnIn
      */
     private showUpdatingResult(isSuccess: boolean, errorMessage?: string): void {
         if (isSuccess) {
-            this.showNotification('verify_email_mail_sent');
+            this.showNotification('verify_email_mail_sent', {
+                email: this.form.value['email']
+            });
             this.nav.pop();
 
             return;

@@ -9,11 +9,11 @@
             <question *ngFor="let question of questions" [question]="question" [form]="form"></question>
         </ion-list>
         <div class="sk-buttons">
-            <button ion-button round [disabled]="isRequestLoading || questionControl.isFormPending(form)" (click)="submit()">
+            <button ion-button round class="sk-verify-email-code-button" [disabled]="isRequestLoading || questionControl.isFormPending(form)" (click)="submit()">
                 <span class="sk-text-overflow">{{ 'verify_email_done_button' | translate }}</span>
                 <ion-spinner class="sk-spinner-btn" *ngIf="isRequestLoading" name="ios-small"></ion-spinner>
             </button>
-            <h4 (click)="openCheckEmailPage()">
+            <h4 class="sk-verify-email-page-button" (click)="openCheckEmailPage()">
                 {{ 'verify_email_open_check_email_page' | translate }}
             </h4>
         </div>
@@ -22,7 +22,7 @@
 
 <ion-footer class="sk-back-footer sk-blank-state-footer">
     <ion-toolbar>
-        <button type="button" ion-button block clear icon-start (click)="openLoginPage()">
+        <button type="button" class="sk-leave-verify-email-code-button" ion-button block clear icon-start (click)="openLoginPage()">
             <ion-icon name="ios-arrow-back"></ion-icon>
             <span class="sk-text-overflow">{{ 'back_to_starter_page_button' | translate }}</span>
         </button>

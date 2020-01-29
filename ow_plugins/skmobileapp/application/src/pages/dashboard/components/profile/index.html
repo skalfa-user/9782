@@ -47,7 +47,7 @@
                 </button>
 
                 <!-- guests -->
-                <button *ngIf="siteConfigs.isPluginActive('ocsguests')" ion-button clear [navPush]="guestsPage">
+                <button *ngIf="siteConfigs.isPluginActive('ocsguests')" class="sk-guests-button" ion-button clear [navPush]="guestsPage">
                     <span class="sk-text-overflow">{{ 'profile_my_guests' | translate }}</span>
                     <span *ngIf="newGuestsCount$ | async as newGuestsCount" class="sk-guest-count">
                         <span *ngIf="newGuestsCount <= 99">
