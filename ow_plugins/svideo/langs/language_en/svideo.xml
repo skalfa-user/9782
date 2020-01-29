@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<prefix name="svideo" label="Sweet Video" language_tag="en" language_label="English">
+    <key name="video_settings_head"><value>Video Settings</value></key>
+    <key name="save_feedback"><value>Video has been saved</value></key>
+    <key name="title_label"><value>Title</value></key>
+    <key name="video_label"><value>Video</value></key>
+    <key name="description_label"><value>Description</value></key>
+    <key name="video_desc"><value>Use video embed code from resources like Youtube, Metacafe, Google Video and others.</value></key>
+    <key name="description_desc"><value>Short description of the video</value></key>
+    <key name="btn_save"><value>Save</value></key>
+</prefix>
