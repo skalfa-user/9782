@@ -46,7 +46,7 @@ html[xmlns] .user_counter_join .ow_canvas {
 
 
 .user_counter_join_block .connect_button_list {
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     width: 300px;
     left: 0;
