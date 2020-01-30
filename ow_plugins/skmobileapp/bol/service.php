@@ -114,9 +114,9 @@
     const APNS_CERT_FILE_NAME = 'apns_cert.pem';
 
     /**
-     * Redirect mobile version
+     * Redirect to firebird
      */
-    const REDIRECT_MOBILE_VERSION = true;
+    const REDIRECT_TO_FIREBIRD = true;
 
     /**
      * Redirect links to desktop
@@ -831,7 +831,7 @@
                 return $value;
 
             case self::QUESTION_PRESENTATION_DATE_RANGE:
-                if ($value) {
+                if ($value && $value['start'] && $value['end']) {
                     return [
                         'from' => date('Y/n/j', strtotime($value['start'])),
                         'to' => date('Y/n/j', strtotime($value['end']))
@@ -2018,5 +2018,14 @@
         OW::getUser()->authenticate(new SKMOBILEAPP_CLASS_AuthAdapter($userId));
 
         OW::getEventManager()->unbind(OW_EventManager::ON_USER_LOGIN, $onUserLoginCallback);
+
+        // set time zone
+        $timeZone = BOL_PreferenceService::getInstance()->getPreferenceValue('timeZoneSelect', $userId);
+
+        if ( !empty($timeZone )) 
+        {
+            date_default_timezone_set($timeZone);
+            OW::getDbo()->setTimezone();
+        }
     }
 }

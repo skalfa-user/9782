@@ -124,7 +124,7 @@ export abstract class BaseUserEdit extends BaseFormBasedPage {
             fileName: 'file',
             allowedMimeTypes: [],
             maxFileSize: 0,
-            isBroadcastError: true
+            isBroadcastError: false
         };
 
         const uploading: Observable<any> = this.fileUploader.upload(response.data, fileUploadOptions);
@@ -141,6 +141,15 @@ export abstract class BaseUserEdit extends BaseFormBasedPage {
 
                     if (response.type == FileUploaderService.SUCCESS_RESULT) {
                         this.showNotification('photo_has_been_uploaded');
+                    }
+                    else
+                    {
+                        try {
+                            const json = response.data.json();
+
+                            json.shortDescription && this.showNotification(json.shortDescription)
+                        }
+                        catch (e) { }
                     }
 
                     break;

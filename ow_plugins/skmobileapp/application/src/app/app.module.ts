@@ -16,6 +16,7 @@ import { Device } from '@ionic-native/device';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AngularFireModule, FirebaseOptionsToken } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 // store
 import { rootReducer, IAppState, INITIAL_STATE } from 'store';
@@ -61,13 +62,14 @@ import * as appPages from 'app/app.pages';
         AdMobFree,
         Push,
         Device,
+        Insomnia,
         InAppBrowser,
-        {  
-            provide: 'virtualScroller.checkResizeInterval', 
-            useValue: 0  
+        {
+            provide: 'virtualScroller.checkResizeInterval',
+            useValue: 0
         },
         ...appServices.list,
-        { 
+        {
             provide: FirebaseOptionsToken,
             useFactory: (application) => {
                 return {

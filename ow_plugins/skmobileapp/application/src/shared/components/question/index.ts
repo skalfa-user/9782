@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AlertController, Events } from 'ionic-angular';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { QuestionBase } from 'services/questions/questions/base';
@@ -15,7 +15,7 @@ import { RequireValidator } from 'services/questions/validators/require';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class QuestionComponent implements OnInit, OnDestroy {
+export class QuestionComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() question: QuestionBase;
     @Input() form: FormGroup;
 
@@ -61,6 +61,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 }
             });
         }
+    }
+
+    /**
+     * Component fully loaded
+     */
+    ngAfterViewInit(): void {
+        setTimeout(() => this.ref.markForCheck());
     }
 
     /**

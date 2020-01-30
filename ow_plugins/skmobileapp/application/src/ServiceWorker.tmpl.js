@@ -23,6 +23,7 @@ self.toolbox.precache(
     ]
 );
 
+// media files should not be cached
 toolbox.router.get(/.*(?<!.mp4\/)$/, function(request, values, options) {
     return self.toolbox.networkFirst(request, values, options);
 });

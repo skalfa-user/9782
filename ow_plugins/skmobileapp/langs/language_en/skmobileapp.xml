@@ -457,4 +457,5 @@
         &lt;br/&gt;
         Follow this &lt;a href="https://developers.google.com/places/web-service/autocomplete">link&lt;/a&gt; to read more information</value></key>
     <key name="gateway_title"><value>Mobile applications</value></key>
+    <key name="membership_actions_not_found"><value>Nothing found!</value></key>
 </prefix>

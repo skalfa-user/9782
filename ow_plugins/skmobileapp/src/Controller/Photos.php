@@ -12,9 +12,11 @@
 namespace Skadate\Mobile\Controller;
 
 use Silex\Application as SilexApplication;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use PHOTO_BOL_PhotoService;
+use PHOTO_BOL_PhotoAlbumService;
 use OW;
 use OW_Event;
 use BOL_AvatarService;
@@ -96,6 +98,19 @@ class Photos extends Base
 
                 if (!$selectedAlbumId) {
                     throw new BadRequestHttpException('Undefined album');
+                }
+
+                $photoInAlbumCount = PHOTO_BOL_PhotoAlbumService::getInstance()->countAlbumPhotos($selectedAlbumId);
+                $photoInAlbumSetting = OW::getConfig()->getValue('photo', 'album_quota');
+
+                if ( ++$photoInAlbumCount > $photoInAlbumSetting )
+                {
+                    return new Response(json_encode([
+                        'type' => 'photoLimitReached',
+                        'shortDescription' => OW::getLanguage()->text('photo', 'album_quota_exceeded', array('limit' => $photoInAlbumSetting)),
+                    ]), Response::HTTP_BAD_REQUEST, [
+                        'Content-Type' => 'application/json'
+                    ]);
                 }
 
                 // upload photo

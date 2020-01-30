@@ -175,7 +175,7 @@
     <ion-toolbar color="transparent">
         <div class="sk-profile-actions sk-action-btns {{ !isBookmarksLoaded || !siteConfigs.isPluginActive('bookmarks') ? 'sk-bookmarks-disabled' : ''}} {{ !isChatAllowed ? 'sk-messages-disabled' : '' }}">
             <!-- bookmarks -->
-            <button class="{{ isUserBookmarked ? 'sk-bookmarked-btn' : 'sk-bookmark-btn' }}" (tap)="bookmarkUser()"></button>
+            <button class="{{ isUserBookmarked ? 'sk-bookmarked-btn' : 'sk-bookmark-btn' }} sk-action-smaller-btn" (tap)="bookmarkUser()"></button>
 
             <!-- dislike -->
             <button class="sk-profile-dislike-btn sk-dislike-btn" (tap)="dislikeUser()" [@dislike]="currentUserMatchType"></button>
@@ -184,7 +184,7 @@
             <button class="sk-profile-like-btn sk-like-btn" (tap)="likeUser()" [@like]="currentUserMatchType"></button>
 
              <!-- chat -->
-             <button *ngIf="isChatAllowed" class="sk-profile-message-btn" (click)="showChat()"></button>
+             <button *ngIf="isChatAllowed" class="sk-profile-message-btn sk-action-smaller-btn" (click)="showChat()"></button>
         </div>
     </ion-toolbar>
 </ion-footer>

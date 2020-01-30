@@ -88,7 +88,10 @@ class SKMOBILEAPP_Cron extends OW_Cron
      */
     public function cleanExpiredUsersSubscriptions()
     {
+        if ( OW::getPluginManager()->isPluginActive(SKMOBILEAPP_BOL_Service::MEMBERSHIP_PLUGIN_KEY) )
+        {
         SKMOBILEAPP_BOL_PaymentsService::getInstance()->expireUsersSubscriptions(0, self::EXPIRED_SUBSCRIPTIONS_LIMIT);
+    }
     }
 
     /**

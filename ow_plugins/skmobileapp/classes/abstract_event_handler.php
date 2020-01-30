@@ -218,13 +218,19 @@ abstract class SKMOBILEAPP_CLASS_AbstractEventHandler
             {
                 $extraData = json_decode($sale->extraData, true);
 
+                if ( isset($extraData['platform']) &&
+                    in_array(strtolower($extraData['platform']), [SKMOBILEAPP_BOL_PaymentsService::PLATFORM_IOS, SKMOBILEAPP_BOL_PaymentsService::PLATFORM_ANDROID]) )
+                {
+                    $platform = $extraData['platform'];
+
                 $inappsPurchase = new SKMOBILEAPP_BOL_InappsPurchase();
                 $inappsPurchase->saleId = $sale->getId();
                 $inappsPurchase->membershipId = $membership->getId();
-                $inappsPurchase->platform = isset($extraData['platform']) ? $extraData['platform'] : 'unknown';
+                    $inappsPurchase->platform = $platform;
 
                 $inappsService->updateInappsPurchase($inappsPurchase);
             }
         }
+    }
     }
 }

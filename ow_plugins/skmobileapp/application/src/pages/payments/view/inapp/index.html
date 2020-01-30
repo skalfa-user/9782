@@ -52,7 +52,7 @@
 
         <!-- nothing found  CHECK THIS -->
         <div *ngIf="!membership?.actions?.length && !membership?.plans?.length">
-            Nothing found!
+            {{ 'membership_actions_not_found!' | translate }}
         </div>
     </ng-container>
 </ion-content>

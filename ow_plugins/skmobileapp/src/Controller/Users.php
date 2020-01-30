@@ -282,7 +282,7 @@ class Users extends Base
             // assign early uploaded avatar
             if ($data['avatarKey']) {
                 OW::getSession()->set(BOL_AvatarService::AVATAR_CHANGE_SESSION_KEY, $data['avatarKey']);
-                $this->avatarService->createAvatar($user->id, false, false);
+                $this->avatarService->createAvatar($user->id, true, false);
             }
             else {
                 OW::getSession()->set(BOL_AvatarService::AVATAR_CHANGE_SESSION_KEY, null);

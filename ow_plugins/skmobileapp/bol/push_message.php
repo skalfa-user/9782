@@ -158,6 +158,8 @@ class SKMOBILEAPP_BOL_PushMessage
                 $messageLanguage = $languageService->getCurrent();
             }
 
+            $languageService->setCurrentLanguage($messageLanguage);
+
             // translate the message
             $title = $languageService->
                     getText($messageLanguage->getId(), $this->languagePrefix, $titleLangKey, $langVars);

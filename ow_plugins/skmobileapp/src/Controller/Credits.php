@@ -60,7 +60,7 @@ class Credits extends Base
                 $creditsInfo = SKMOBILEAPP_BOL_CreditsService::getInstance()->getCreditsInfo($loggedUserId);
 
                 return $app->json([
-                    'isInfoAvailable' => !empty($creditsInfo['earning']) && !empty($creditsInfo['losing']),
+                    'isInfoAvailable' => !empty($creditsInfo['earning']) || !empty($creditsInfo['losing']),
                     'packs' => $packs, 
                     'balance' => $balance
                 ]);

@@ -227,6 +227,13 @@ class SKMOBILEAPP_BOL_UserMatchActionDao extends OW_BaseDao
                             $pushMessage->sendNotification($recipientId, 'pn_new_match_title', 'pn_new_match');
                         }
 
+                        $avatars = BOL_AvatarService::getInstance()->getDataForUserAvatars([$userId]);
+                        $avatar = $avatars[$userId];
+
+                        $url = OW::getRouter()->urlForRoute('base_user_profile', [
+                            'username' => BOL_UserService::getInstance()->getUserName($userId)
+                        ]);
+
                         // send an email notification
                         $event = new OW_Event('notifications.add', [
                             'pluginKey' => 'skmobileapp',
@@ -236,10 +243,12 @@ class SKMOBILEAPP_BOL_UserMatchActionDao extends OW_BaseDao
                             'userId' => $recipientId,
                             'time' => time()
                         ], [
-                            'string' => array(
+                            'avatar' => $avatar,
+                            'url' =>  $url,
+                            'string' => [
                                 'key' => 'skmobileapp+new_match_notification_string',
                                 'vars' => []
-                            )
+                            ]
                         ]);
 
                         OW::getEventManager()->trigger($event);

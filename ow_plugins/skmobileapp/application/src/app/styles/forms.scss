@@ -334,6 +334,19 @@ question {
         }
 
     }
+
+    // Checkbox TOS toggle
+    &.sk-tos {
+        ion-label {
+            overflow: visible;
+            .button {
+                @include text-align('start');
+                overflow: visible;
+                white-space: normal;
+                height: auto;
+            }
+        }
+    }
 }
 
 //Choosen options via select

@@ -11,6 +11,7 @@
             position: absolute;
             @include position(5vh, 2vh, null, null);
             z-index: 13;
+            transform: translateZ(0);
 
             .sk-videoim-link-icon-profile {
                 display: inline-block;
@@ -31,6 +32,7 @@
             height: 4.5rem;
             width: 4.5rem;
             background-color: $sk-profile-slider-back;
+            transform: translateZ(0);
 
             .icon {
                 font-size: 3.5rem;

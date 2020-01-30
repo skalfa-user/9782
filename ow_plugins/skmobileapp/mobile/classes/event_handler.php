@@ -43,9 +43,15 @@ class SKMOBILEAPP_MCLASS_EventHandler extends SKMOBILEAPP_CLASS_AbstractEventHan
     public function onAfterRoute($event) 
     {
         try {
-            if ( SKMOBILEAPP_BOL_Service::REDIRECT_MOBILE_VERSION )
+            if ( SKMOBILEAPP_BOL_Service::REDIRECT_TO_FIREBIRD )
             {
                 $route = OW::getRouter()->route();
+
+                // Skip api requests
+                if ( $route && $route['controller'] === 'SKMOBILEAPP_MCTRL_Api' )
+                {
+                    return;
+                }
 
                 // redirect to the PWA version (only if user on the root page)
                 if ( $route && $route['controller'] === 'BASE_MCTRL_WidgetPanel' && $route['action'] == 'index' )
@@ -63,6 +69,13 @@ class SKMOBILEAPP_MCLASS_EventHandler extends SKMOBILEAPP_CLASS_AbstractEventHan
                 }
             }
         }
-        catch(Exception $e) {}
+        catch(Exception $e) {
+            // redirect all exception's requests to the desktop version
+            if ( SKMOBILEAPP_BOL_Service::REDIRECT_LINKS_TO_DESKTOP )
+            {
+                $requestUri = OW::getRequest()->getRequestUri();
+                OW::getApplication()->redirect($requestUri, OW::CONTEXT_DESKTOP);
+            }
+        }
     }
 }

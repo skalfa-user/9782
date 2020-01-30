@@ -72,9 +72,18 @@ class SKMOBILEAPP_CTRL_Api extends OW_ActionController
     public function index()
     {
         $apiRoute = OW::getRouter()->getRoute('skmobileapp.api');
+        $apiUri  = preg_replace('|^.+' . $apiRoute->getRoutePath() . '|i', '', $_SERVER['REQUEST_URI']);
+        $uriPath = parse_url ( $apiUri,  PHP_URL_PATH);
+
+        // checking for the trailing slash
+        if ( substr($uriPath, -1) != '/') {
+            // redirect the route using the trailing slash
+            $this->redirect(OW_URL_HOME . $apiRoute->
+                getRoutePath() . $uriPath . '/?' . parse_url ( $apiUri,  PHP_URL_QUERY));
+        }
 
         // clear route
-        $_SERVER['REQUEST_URI'] = preg_replace('|^.+' . $apiRoute->getRoutePath() . '|i', '', $_SERVER['REQUEST_URI']);
+        $_SERVER['REQUEST_URI'] = $apiUri;
 
         // init silex framework
         $app = new SilexApplication();
@@ -149,7 +158,7 @@ class SKMOBILEAPP_CTRL_Api extends OW_ActionController
             new ApiLanguageMiddleware($app),
             new MaintenanceMiddleware($app),
             new UserStatusMiddleware($app),
-            new UserOnlineMiddleware($app)           
+            new UserOnlineMiddleware($app)
         ];
 
         if ( OW_DEBUG_MODE === false ) 

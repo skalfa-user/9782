@@ -43,5 +43,6 @@ package.json
 resources/ios/
 resources/android/
 resources/icon.png.md5
-resources/splash.png.md5ul_web_hooks
+resources/splash.png.md5
+ul_web_hooks
 package-lock.json

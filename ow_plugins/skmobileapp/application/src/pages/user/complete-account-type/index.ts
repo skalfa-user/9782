@@ -127,11 +127,12 @@ export class CompleteAccountTypePage extends BaseFormBasedPage implements OnInit
 
                 // register all questions inside a form group
                 this.form = this.questionControl.toFormGroup(this.questions);
+            });
+
 
                 this.isPageLoading = false;
                 this.ref.markForCheck();
             });
-        });
     }
 
     /**

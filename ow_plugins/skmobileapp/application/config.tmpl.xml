@@ -73,7 +73,8 @@
     <preference name="webviewbounce" value="false"/>
     <preference name="UIWebViewBounce" value="false"/>
     <preference name="DisallowOverscroll" value="true"/>
-    <preference name="android-minSdkVersion" value="16"/>
+    <preference name="android-minSdkVersion" value="19"/>
+    <preference name="android-targetSdkVersion" value="28"/>
     <preference name="BackupWebStorage" value="none"/>
     <preference name="orientation" value="portrait" />
 
@@ -120,7 +121,9 @@
     <plugin name="cordova-hot-code-push-plugin" spec="1.5.3" />
     <plugin name="cordova-plugin-inapppurchase" spec="1.2.0" />
     <plugin name="phonegap-plugin-media-stream" spec="1.2.1" />
-    <plugin name="cordova-plugin-iosrtc" spec="4.0.2" />
+    <plugin name="cordova-plugin-iosrtc" spec="https://github.com/skalfa/cordova-plugin-iosrtc" />
+    <plugin name="cordova-plugin-insomnia" spec="4.3.0" />
+    <plugin name="cordova-plugin-audioroute" spec="0.1.2" />
     <plugin name="cordova-plugin-buildinfo" spec="2.0.2" />
     <plugin name="cordova-universal-links-plugin" spec="https://github.com/flipflopapp/cordova-universal-links-plugin.git" />
     <plugin name="cordova-plugin-browsertab" spec="0.2.0" />

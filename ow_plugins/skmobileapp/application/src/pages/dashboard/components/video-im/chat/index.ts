@@ -502,23 +502,37 @@ export class VideoImChatComponent implements OnInit, OnDestroy {
      * Track credits
      */
     private trackCredits(): void {
+        const trackCreditsType: string = this.siteConfigs.getConfig('videoim_track_credits_type');
+        let isTrackCreditsAllowed: boolean = false;
+
+        if (trackCreditsType == 'both' ||
+            (trackCreditsType == 'initiator' && this.isMeInitiator) ||
+            (trackCreditsType == 'interlocutor' && !this.isMeInitiator)) {
+
+            isTrackCreditsAllowed = true;
+        }
+
+        if (isTrackCreditsAllowed) {
         this.zone.runOutsideAngular(() => {
             if (this.timedCallPermission) {
                 if (this.timedCallPermission.isAllowed) {
                     this.permissions.trackAction('videoim', 'video_im_timed_call').subscribe();
                 }
                 else {
-                    
-                    this.closePeerConnection();
+
+                        this.showMessage(this.translate.instant('vim_call_ended_you_ran_out_credits'));
 
                     this.videoIm.sendNotification(this.interlocutorId, {
                         type: 'credits_out'
                     }).subscribe();
+
+                        this.closePeerConnection();
                 }
 
                 this.trackCreditsTimeoutHandler = setTimeout(() => this.trackCredits(), this.trackCreditsTime);
             }
         });
+    }
     }
 
     /**

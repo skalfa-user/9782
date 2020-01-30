@@ -208,7 +208,9 @@ export class LoginPage extends BaseFormBasedPage implements OnInit, OnDestroy {
             // the user successfully logged in
                     if (response && response.isSuccess === true) {
                 this.auth.setAuthenticated(response.token);
-                this.nav.setRoot(DashboardPage);
+
+                        // reload the app
+                        window.location.href = this.application.getAppUrl(false);
 
                 return;
             }

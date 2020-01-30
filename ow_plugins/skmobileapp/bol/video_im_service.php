@@ -26,7 +26,7 @@ class SKMOBILEAPP_BOL_VideoImService extends SKMOBILEAPP_BOL_Service
         $processedNotifications = [];
 
         $notifications = VIDEOIM_BOL_VideoImService::getInstance()->getNotifications($userId);
-        
+
         foreach ( $notifications as $index => $notification )
         {
             $decoded = json_decode($notification['notification'], true);
@@ -58,7 +58,7 @@ class SKMOBILEAPP_BOL_VideoImService extends SKMOBILEAPP_BOL_Service
       
         // Sort notification array to ensure 'candidate' notifications are in last places
         uasort( $processedNotifications, function( $left, $right ) {
-            return $right['type'] == 'candidate' ? -1 : 1; 
+            return $right['type'] == 'candidate' || $right['type'] == 'bye' ? -1 : 1;
         });
 
         // load avatars

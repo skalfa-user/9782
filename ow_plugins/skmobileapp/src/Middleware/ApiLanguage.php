@@ -36,8 +36,11 @@ class ApiLanguage extends Base
     public function getMiddleware()
     {
         return function (Request $request) {
-            $apiLanguage = SKMOBILEAPP_BOL_Service::getInstance()->conversionLang(
-                $request->headers->get('api-language', $request->headers->get('api-language')));
+            // try to extract the api lang both from headers and get params
+            $apiLanguageParam = $request->headers->get('api-language', $request->query->get('api-language'));
+
+            // convert the api lang param
+            $apiLanguage = SKMOBILEAPP_BOL_Service::getInstance()->conversionLang($apiLanguageParam);
 
             if ($apiLanguage) {
                 $languages = BOL_LanguageService::getInstance()->getLanguages();

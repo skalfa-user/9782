@@ -24,7 +24,8 @@ class InApps extends Base
      *
      * @var bool
      */
-    protected $isPluginActive = false;
+    protected $isMembershipPluginActive = false;
+    protected $isUserCreditsPluginActive = false;
 
     /**
      * Constructor.
@@ -33,7 +34,8 @@ class InApps extends Base
     {
         parent::__construct();
 
-        $this->isPluginActive = OW::getPluginManager()->isPluginActive(SKMOBILEAPP_BOL_Service::MEMBERSHIP_PLUGIN_KEY);       
+        $this->isMembershipPluginActive = OW::getPluginManager()->isPluginActive(SKMOBILEAPP_BOL_Service::MEMBERSHIP_PLUGIN_KEY);
+        $this->isUserCreditsPluginActive = OW::getPluginManager()->isPluginActive(SKMOBILEAPP_BOL_Service::USER_CREDITS_PLUGIN_KEY);
     }
 
     /**
@@ -49,7 +51,7 @@ class InApps extends Base
 
         // register a purchase
         $controllers->post('/', function (Request $request) use ($app) {
-            if ($this->isPluginActive) {
+            if ( $this->isMembershipPluginActive || $this->isUserCreditsPluginActive ) {
                 $paymentsService = SKMOBILEAPP_BOL_PaymentsService::getInstance();
 
                 $loggedUserId = $app['users']->getLoggedUserId();
@@ -83,7 +85,7 @@ class InApps extends Base
                 throw new BadRequestHttpException('The purchase in not valid');
             }
 
-            throw new BadRequestHttpException('Membership plugin is not activated');
+            throw new BadRequestHttpException('Membership or UserCredits plugin is not activated');
         });
 
         return $controllers;
