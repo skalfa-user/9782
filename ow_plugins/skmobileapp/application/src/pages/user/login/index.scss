@@ -131,14 +131,27 @@
                             @include margin(null, 0, null, -50%);
                         }
                     }
+                    &-list {
+                        @include flex(flex, row, center, stretch);
+                    }
                     &-button {
-                        margin: 0 0.7rem;
-                        width: 4.7rem;
-                        height: 4.7rem;
+                        margin: 0 1.3vw;
+                        width: 2.5em;
+                        height: 2.5em;
+                        padding: 0;
                         min-width: 0;
                         background-repeat: no-repeat;
                         background-position: center center;
-                        background-size: 4.7rem;
+                        background-size: contain;
+                        border-radius: 0;
+
+                        &:first-child {
+                            @include margin(null, null, null, 0);
+                        }
+
+                        &:last-child {
+                            @include margin(null, 0, null, null);
+                        }
 
                         &[data-firebase-provider="twitter.com"] {
                             background-image: url("../assets/img/user/login/ic-firebase-twitter.svg");
@@ -181,7 +194,7 @@
 
 @media screen and (max-height: 600px) {
     .sk-login-page .sk-login-page-cont form .sk-buttons {
-        min-height: 200px;
+        min-height: 240px;
 
         .sk-login  {
             margin-bottom: 1vh;
