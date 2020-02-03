@@ -103,4 +103,38 @@ body .connect_button_cont.clearfix  {
 .firebaseauth-form .ow_table_1 td {
     border: none;
 }
+
+/* end */
+
+/* Z:  Firebase styles for index page -- Platinum Pro */
+.platinum_pro .user_counter_join_block .connect_button_list {
+    width: 100%;
+}
+.platinum_pro .user_counter_join .firebaseauth-auth-wrapper {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+}
+.platinum_pro .user_counter_join .firebaseauth-button-wrap {
+    display: block !important;
+    opacity: 1 !important;
+    position: static;
+    width: auto;
+    padding-left: 0;
+}
+.platinum_pro .user_counter_join .firebaseauth-common-button {
+    display: none !important;
+}
+.platinum_pro .user_counter_join .firebaseauth-auth-wrapper .firebaseauth-button {
+    width: 40px;
+    height: 40px;
+}
+/* end */
+
+/* Z:  Firebase styles for Sign In Page -- Turquoise */
+.turquoise.base_sign_in .firebaseauth-auth-wrapper {
+    margin: 0;
+}
+
 /* end */
