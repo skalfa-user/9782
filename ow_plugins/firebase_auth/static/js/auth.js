@@ -76,6 +76,19 @@ function FireBaseAuth(options)
                 login(response, providerId);
             }).catch(function(error) {
                 switch(error.code) {
+                    // process account exists with different credential error
+                    case 'auth/account-exists-with-different-credential' :
+                        firebase.auth().onAuthStateChanged( (user) => {
+                            if (user) {
+                                // login user by already registered provider data
+                                login({user: user}, providerId);
+                            }
+                            else {
+                                OW.error(authOptions.messages.errorOccurred);
+                            }
+                        });
+                        break;
+
                     // ignore some kind of errors
                     case 'auth/popup-closed-by-user' :
                     case 'auth/cancelled-popup-request' : 

@@ -40,6 +40,15 @@ class FIREBASEAUTH_CLASS_SettingsForm extends Form
 
         $this->addElement($authDomain);
 
+        // auth  domain
+        $emailExmple = new TextField('email_example');
+        $emailExmple->setRequired(true);
+        $emailExmple->setValue(FIREBASEAUTH_BOL_Service::getInstance()->getEmailExample());
+        $emailExmple->setLabel(OW::getLanguage()->text(FIREBASEAUTH_BOL_Service::PLUGIN_KEY, 'form_email_example_title_label'));
+        $emailExmple->setDescription(OW::getLanguage()->text(FIREBASEAUTH_BOL_Service::PLUGIN_KEY, 'form_email_example_description'));
+
+        $this->addElement($emailExmple);
+
         // process providers
         $processedProviders = [];
         $allProviders = FIREBASEAUTH_BOL_Service::getInstance()->getAllRegisteredProviders();
@@ -54,6 +63,7 @@ class FIREBASEAUTH_CLASS_SettingsForm extends Form
         $providers = new CheckboxGroup('enabled_providers');
         $providers->setValue(FIREBASEAUTH_BOL_Service::getInstance()->getEnabledProviders());
         $providers->setOptions($processedProviders);
+        $providers->setRequired();
         $providers->setColumnCount(3);
 
         $this->addElement($providers);
@@ -74,5 +84,6 @@ class FIREBASEAUTH_CLASS_SettingsForm extends Form
         FIREBASEAUTH_BOL_Service::getInstance()->setApiKey($this->getElement('api_key')->getValue());
         FIREBASEAUTH_BOL_Service::getInstance()->setAuthDomain($this->getElement('auth_domain')->getValue());
         FIREBASEAUTH_BOL_Service::getInstance()->setEnabledProviders($this->getElement('enabled_providers')->getValue());
+        FIREBASEAUTH_BOL_Service::getInstance()->setEmailExample($this->getElement('email_example')->getValue());
     }
 }

@@ -65,12 +65,7 @@ body .connect_button_cont.clearfix  {
 .firebase-auth-provider[data-provider="linkedin.com"] {
     background-image: url("../img/ic-firebase-auth-linkedin.svg");
 }
-.firebaseauth-button[data-provider="instagram.com"],
-.ow.base_sign_in .ow_sign_in .firebaseauth-button[data-provider="instagram.com"],
-.ow.base_sign_in .ow_sign_in .firebaseauth-button[data-provider="instagram.com"]:hover,
-.firebase-auth-provider[data-provider="instagram.com"] {
-    background-image: url("../img/ic-firebase-auth-instagram.svg");
-}
+
 /* hide console icon */
 .ow_ico_signin.firebaseauth {
     display: none;
@@ -128,9 +123,6 @@ body .connect_button_cont.clearfix  {
 .platinum_pro .user_counter_join .firebaseauth-auth-wrapper .firebaseauth-button {
     width: 40px;
     height: 40px;
-}
-.platinum_pro #base_cmp_floatbox_ajax_signin .ow_connect_text {
-    margin-right: 0;
 }
 /* end */
 
