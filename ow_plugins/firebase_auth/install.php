@@ -20,7 +20,6 @@ $defaultConfigs = array(
     'api_key' => '',
     'auth_domain' => '',
     'max_displayed_providers' => 5,
-    'email_example' => 'email@example.com',
     'enabled_providers' => '[]'
 );
 

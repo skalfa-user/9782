@@ -56,6 +56,7 @@ class FIREBASEAUTH_BOL_Service
             FIREBASEAUTH_BOL_Service::FACEBOOK_PROVIDER => 'Facebook',
             FIREBASEAUTH_BOL_Service::GOOGLE_PROVIDER => 'Google',
             FIREBASEAUTH_BOL_Service::LINKEDIN_PROVIDER => 'LinkedIn',
+            FIREBASEAUTH_BOL_Service::INSTAGRAM_PROVIDER => 'Instagram'
         ];
     }
 
@@ -88,16 +89,6 @@ class FIREBASEAUTH_BOL_Service
     }
 
     /**
-     * Get email example
-     *
-     * @return string
-     */
-    public function getEmailExample()
-    {
-        return OW::getConfig()->getValue(self::PLUGIN_KEY, 'email_example');
-    }
-
-    /**
      * Set auth domain
      * 
      * @param string $authDomain
@@ -105,7 +96,7 @@ class FIREBASEAUTH_BOL_Service
      */
     public function setAuthDomain($authDomain)
     {
-        OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'auth_domain', $authDomain);
+        return OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'auth_domain', $authDomain);
     }
 
     /**
@@ -126,7 +117,7 @@ class FIREBASEAUTH_BOL_Service
      */
     public function setApiKey($apiKey)
     {
-        OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'api_key', $apiKey);
+        return OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'api_key', $apiKey);
     }
 
     /**
@@ -147,19 +138,7 @@ class FIREBASEAUTH_BOL_Service
      */
     public function setEnabledProviders(array $providers)
     {
-        OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'enabled_providers', json_encode($providers));
-    }
-
-    /**
-     * Set email example
-     *
-     * @param string $email
-     *
-     * @return void
-     */
-    public function setEmailExample($email)
-    {
-        OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'email_example', $email);
+        return OW::getConfig()->saveConfig(self::PLUGIN_KEY, 'enabled_providers', json_encode($providers));
     }
 
     /**
@@ -212,11 +191,10 @@ class FIREBASEAUTH_BOL_Service
      * @return array
      *      string type
      *      integer id
-     * @throws Exception
      */
     public function authenticateUser( $providerId, $remoteId, $username = '', $email = '', $photo = '' )
     {
-        // try to find a user profile using the remote id and provider id
+        // try to find a user profile using the remote id and provider id 
         $authAdapter = new FIREBASEAUTH_CLASS_FirebaseAuthAdapter($providerId, $remoteId);
 
         if ( $authAdapter->isRegistered() )
@@ -249,9 +227,6 @@ class FIREBASEAUTH_BOL_Service
      * @param string $username
      * @param string $email
      * @param string $photo
-     *
-     * @throws Exception
-     *
      * @return integer
      */
     protected function registerUser($providerId, $remoteId, $username = '', $email = '', $photo = '')
@@ -264,24 +239,16 @@ class FIREBASEAUTH_BOL_Service
             return $userByEmail->id;
         }
 
-        // process user name
         $realName = $username;
-        $username = preg_replace( "/[^a-zA-Z0-9]/", '', $username );
 
-        if ( BOL_UserService::getInstance()->findByUsername($username) ) {
-            // get like users
-            $example = new OW_Example();
-            $example->andFieldLike('username', $username);
+        // process user data
+        $username = mb_strtolower(str_replace(' ', '', trim($username)));
 
-            // get count like users
-            $countLikeUserNames = BOL_UserDao::getInstance()->countByExample($example);
+        $username = $username && UTIL_Validator::isUserNameValid($username) 
+                && !BOL_UserService::getInstance()->isExistUserName($username) ? $username : $this->generateUsername();
 
-            // set new username
-            $username = $username . $countLikeUserNames;
-        }
-
-        // process email
-        $email = $email && UTIL_Validator::isEmailValid($email) ? $email : $this->generateUserEmail();
+        $email = $email && UTIL_Validator::isEmailValid($email)  
+                && !BOL_UserService::getInstance()->isExistEmail($email) ? $email : $this->generateUserEmail();
 
         $password = uniqid();
 
@@ -378,17 +345,16 @@ class FIREBASEAUTH_BOL_Service
      */
     protected function generateUserEmail()
     {
-        $exampleEmail = $this->getEmailExample();
+        $adminEmail = OW::getConfig()->getValue('base', 'site_email');
+        $parseAdminEmail = explode('@', $adminEmail);
 
-        $dbName = OW_DB_NAME;
-        $tableName = BOL_UserDao::getInstance()->getTableName();
+        $email = $parseAdminEmail[0] . '+user' . uniqid(time() . OW_PASSWORD_SALT) . '@' . $parseAdminEmail[1];
 
-        $sql = "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{$dbName}' AND TABLE_NAME = '{$tableName}'";
+        if ( BOL_UserService::getInstance()->isExistEmail($email) )
+        {
+            return $this->generateUserEmail();
+        }
 
-        $lastId =  OW::getDbo()->queryForColumn($sql);
-
-        $parseEmail = explode('@', $exampleEmail);
-
-        return $parseEmail[0] . '+user' . $lastId . '@' . $parseEmail[1];
+        return $email;
     }
 }

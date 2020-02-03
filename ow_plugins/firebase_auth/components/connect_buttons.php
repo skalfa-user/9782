@@ -96,8 +96,6 @@ class FIREBASEAUTH_CMP_ConnectButtons extends OW_Component
             'errorOccurred' => OW::getLanguage()->text(FIREBASEAUTH_BOL_Service::PLUGIN_KEY, 'authenticate_error')
         ]));
 
-        OW::getLanguage()->addKeyForJs('firebaseauth', 'account_exists_error');
-
         // init view variables
         $this->assign('enabledProviders', $enabledProviders);
         $this->assign('isLongProviderList', $isAuthLongProviderList);
